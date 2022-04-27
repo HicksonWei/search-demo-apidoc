@@ -1,0 +1,182 @@
+openapi: 3.0.0
+info:
+  title: Search Demo API-Doc
+  contact:
+    name: Hank
+    email: hanks199021@gmail.com
+  license:
+    name: Copyright Hank 2022. All rights reserved
+  version: v0.1
+servers:
+  - url: https://virtserver.swaggerhub.com/HicksonWei/Api-Doc/v1.0
+    description: SwaggerHub API Auto Mocking
+  - url: https://us-central1-search-api-test-e968f.cloudfunctions.net/app
+    description: Deployment Server
+security:
+  - bearerAuth: []
+jsonSampleExpandLevel: 'all'
+
+paths:
+  /queryEventLog:
+    post:
+      description: 查詢 Event Logs
+      operationId: Query Event Log
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties: 
+                startDt:
+                  type: string
+                  description: 設定查詢時間範圍 - 起始時間
+                  example: '20220427112355'
+                endDt:
+                  type: string
+                  description: 設定查詢時間範圍 - 終止時間
+                  example: '20220427112356'
+                pageSize:
+                  type: number
+                  description: (分頁用) 每頁顯示幾筆資料
+                  example: 10
+                pageIndex: 
+                  type: number
+                  description: (分頁用) 目前是第幾頁
+                  example: 1
+                caseNo:
+                  type: string
+                  description: 案件編號
+                  example: '2ff11ed2-c3f4-4771-89eb-55fe7bf6cba1'
+                logType:
+                  type: string
+                  description: 事件代碼
+                  example: 'C001'
+                userId:
+                  type: string
+                  description: 人員 ID
+                  example: '16052'
+                keyword:
+                  type: string
+                  description: 關鍵字搜尋 (查找 Event Logs 詳細內容)
+                  example: 'abc'
+              required:
+                - startDt
+                - endDt
+                - pageSize
+                - pageIndex
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        guid:
+                          type: string
+                          description: Event Log ID
+                          example: '2e197104-7e81-41e4-ba9a-9688f5e5c73d'
+                        caseNo:
+                          type: string
+                          description: 案件編號
+                          example: '2c35652f-aba7-480d-bd62-4c32e8ea71e4'
+                        logType:
+                          type: string
+                          description: 事件代碼
+                          example: 'A004'
+                        userId:
+                          type: string
+                          description: 人員 ID
+                          example: '8421'
+                        userName:
+                          type: string
+                          description: 人員名稱
+                          example: 'William'
+                        createDt:
+                          type: string
+                          description: 創建時間
+                          example: '20220421211426'
+                        loginIp:
+                          type: string
+                          description: 登入 IP
+                          example: '115.74.132.123'
+                  itemCount:
+                    type: number
+                    description: 查詢結果總計筆數
+                    example: 21
+                  status:
+                    type: string
+                    description: response 狀態
+                    example: 'success'
+        '400':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: 錯誤訊息
+                    example: 'startDt and endDt is required'
+                  status:
+                    type: string
+                    description: response 狀態
+                    example: 'fail'
+
+  
+  /queryEventLogDetails:
+    post:
+      description: 查詢 Event Logs 詳細內容
+      operationId: Query Event Log Details
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties: 
+                guid: 
+                  type: string
+                  description: Event Log ID
+                  example: '2e197104-7e81-41e4-ba9a-9688f5e5c73d'
+              required:
+                - guid
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      guid: 
+                        type: string
+                        description: Event Log ID
+                        example: '2e197104-7e81-41e4-ba9a-9688f5e5c73d'
+                      details:
+                        type: string
+                        description: Event Log 詳細內容
+                        example: 'Error in quibusdam alias exercitationem qui. Dolorum nobis dolor ut rerum et quos vel quas placeat. Laborum praesentium voluptas. Ipsum odit unde qui dolores aliquid. At iure assumenda voluptatem.\nSed deserunt distinctio accusantium aliquam est provident illo enim. Aut omnis et omnis aut autem eos. Omnis rerum eveniet blanditiis velit iusto sunt officiis temporibus ut.\nQuae impedit voluptatem possimus id modi sunt reprehenderit. Voluptates sed itaque ut. Ut necessitatibus sunt dolor voluptatem esse. Nihil doloremque aliquid dolores qui suscipit.\nDucimus enim ex voluptatum vitae provident sunt perferendis. Perspiciatis ratione dolorem cum velit culpa consequatur eligendi. Sint dolore consequatur repellat tempora commodi dolor sit ipsam. Dolorum officia aliquid. Reiciendis quia repudiandae animi aut molestias eum minus perspiciatis dolor.\nEt voluptatem ut quia non. Aut reiciendis eum magni voluptatem. Ut ut et enim debitis. Perferendis asperiores est.\nQuod itaque distinctio consequatur officiis non ea. Provident atque voluptatem. Dolore beatae atque perferendis. Eum hic et. Enim accusamus porro omnis fugit voluptatem ea ducimus.\nDoloribus qui exercitationem dolorem dolorem et cumque eum at. Omnis officia saepe impedit sapiente tempore. Aliquam nulla nihil et sed. Vero rerum odit a harum velit.'
+                  status:
+                    type: string
+                    description: response 狀態
+                    example: 'success'
+        '400':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: 錯誤訊息
+                    example: 'guid is required'
+                  status:
+                    type: string
+                    description: response 狀態
+                    example: 'fail'
